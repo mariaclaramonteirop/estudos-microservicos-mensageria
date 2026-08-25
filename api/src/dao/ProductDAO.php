@@ -7,6 +7,13 @@ use App\Repository\ProductRepository;
 
 class ProductDAO implements ProductRepository
 {
+
+    private PDO $pdo;
+
+    public function __construct(PDO $pdo)
+    {
+        $this->pdo = $pdo;
+    }
     public function findById(int $id): ?Product
     {
         $sql = "SELECT * FROM products WHERE id = :id";
@@ -105,5 +112,19 @@ class ProductDAO implements ProductRepository
         }
 
         return $products;
+    }
+
+    public function decreaseStock(int $productId, int $quantity): void
+    {
+        $sql = "UPDATE products SET stock = stock - :quantity WHERE id = :id AND stock >= :quantity";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            'id' => $productId,
+            'quantity' => $quantity
+        ]);
+
+        if ($stmt->rowCount() === 0) {
+            throw new \Exception("Product with ID {$productId} not found or insufficient stock.");
+        }
     }
 }

@@ -12,4 +12,5 @@ interface CostumerRepository
     public function delete(int $id): void;
     public function update(Costumer $costumer): void;
     public function findByRestrictions(array $restrictions): array;
+    public function create(Costumer $costumer): Costumer;
 }

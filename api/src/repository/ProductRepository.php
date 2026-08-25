@@ -12,5 +12,7 @@ interface ProductRepository
     public function delete(int $id): void;
     public function update(Product $product): void;
     public function findByRestrictions(array $restrictions): array;
+    public function increaseStock(int $productId, int $quantity): void;
     public function decreaseStock(int $productId, int $quantity): void;
+    public function create(Product $product): Product;
 }

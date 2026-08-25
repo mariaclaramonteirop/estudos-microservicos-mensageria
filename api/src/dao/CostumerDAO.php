@@ -1,73 +1,39 @@
 <?php
 
-namespace App\Entity;
+namespace App\DAO;
 
+use App\Entity\Costumer;
+use App\Repository\CostumerRepository;
 
-class Costumer
+class CostumerDAO implements CostumerRepository
 {
-    private int $id;
-    private string $name;
-    private string $email;
-    private string $phone;
-
-    private string $status = 'active';
-
-    public function __construct(int $id, string $name, string $email, string $phone, string $status = 'active')
+    public function findById(int $id): ?Costumer
     {
-        $this->id = $id;
-        $this->name = $name;
-        $this->email = $email;
-        $this->phone = $phone;
-        $this->status = $status;
+        // Implementation to find a costumer by ID
     }
 
-    public function getId(): int
+    public function findAll(): array
     {
-        return $this->id;
+        // Implementation to find all costumers
     }
 
-    public function setId(int $id): void
+    public function save(Costumer $costumer): void
     {
-        $this->id = $id;
+        // Implementation to save a costumer
     }
 
-    public function getName(): string
+    public function delete(int $id): void
     {
-        return $this->name;
+        // Implementation to delete a costumer by ID
     }
 
-    public function setName(string $name): void
+    public function update(Costumer $costumer): void
     {
-        $this->name = $name;
+        // Implementation to update a costumer
     }
 
-    public function getEmail(): string
+    public function findByRestrictions(array $restrictions): array
     {
-        return $this->email;
-    }
-
-    public function setEmail(string $email): void
-    {
-        $this->email = $email;
-    }
-
-    public function getPhone(): string
-    {
-        return $this->phone;
-    }
-
-    public function setPhone(string $phone): void
-    {
-        $this->phone = $phone;
-    }
-
-    public function getStatus(): string
-    {
-        return $this->status;
-    }
-
-    public function setStatus(string $status): void
-    {
-        $this->status = $status;
+        // Implementation to find costumers by restrictions
     }
 }

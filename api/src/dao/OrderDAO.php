@@ -1,96 +1,39 @@
 <?php
 
-namespace App\Entity;
+namespace App\DAO;
 
-class Order
+use App\Entity\Order;
+use App\Repository\OrderRepository;
+
+class OrderDAO implements OrderRepository
 {
-    private int $id;
-    private int $customerId;
-    private int $productId;
-    private int $quantity;
-    private float $unitPrice;
-    private float $total;
-
-    private string $status = 'created';
-    public function __construct(int $id, int $customerId, int $productId, int $quantity, float $unitPrice, float $total, string $status = 'created')
+    public function findById(int $id): ?Order
     {
-        $this->id = $id;
-        $this->customerId = $customerId;
-        $this->productId = $productId;
-        $this->quantity = $quantity;
-        $this->unitPrice = $unitPrice;
-        $this->total = $total;
-        $this->status = $status;
+        // Implementation to find an order by ID
     }
 
-    public function getId(): int
+    public function findAll(): array
     {
-        return $this->id;
+        // Implementation to find all orders
     }
 
-    public function setId(int $id): void
+    public function save(Order $order): void
     {
-        $this->id = $id;
+        // Implementation to save an order
     }
 
-    public function getCustomerId(): int
+    public function delete(int $id): void
     {
-        return $this->customerId;
+        // Implementation to delete an order by ID
     }
 
-    public function setCustomerId(int $customerId): void
+    public function update(Order $order): void
     {
-        $this->customerId = $customerId;
+        // Implementation to update an order
     }
 
-    public function getProductId(): int
+    public function findByRestrictions(array $restrictions): array
     {
-        return $this->productId;
+        // Implementation to find orders by restrictions
     }
-
-    public function setProductId(int $productId): void
-    {
-        $this->productId = $productId;
-    }
-
-    public function getQuantity(): int
-    {
-        return $this->quantity;
-    }
-
-    public function setQuantity(int $quantity): void
-    {
-        $this->quantity = $quantity;
-    }
-
-    public function getUnitPrice(): float
-    {
-        return $this->unitPrice;
-    }
-
-    public function setUnitPrice(float $unitPrice): void
-    {
-        $this->unitPrice = $unitPrice;
-    }
-
-    public function getTotal(): float
-    {
-        return $this->total;
-    }
-
-    public function setTotal(float $total): void
-    {
-        $this->total = $total;
-    }
-
-    public function getStatus(): string
-    {
-        return $this->status;
-    }
-
-    public function setStatus(string $status): void
-    {
-        $this->status = $status;
-    }
-
 }

@@ -1,94 +1,39 @@
 <?php
 
-namespace App\Entity;
+namespace App\DAO;
 
-class Product
+use App\Entity\Product;
+use App\Repository\ProductRepository;
+
+class ProductDAO implements ProductRepository
 {
-    private int $id;
-    private string $name;
-    private float $price;
-    private int $stock;
-    private string $status = 'active';
-    private string $createdAt;
-    private string $updatedAt;
-
-    public function __construct(int $id, string $name, float $price, int $stock, string $status = 'active', string $createdAt = '', string $updatedAt = '')
+    public function findById(int $id): ?Product
     {
-        $this->id = $id;
-        $this->name = $name;
-        $this->price = $price;
-        $this->stock = $stock;
-        $this->status = $status;
-        $this->createdAt = $createdAt ?: date('Y-m-d H:i:s');
-        $this->updatedAt = $updatedAt ?: date('Y-m-d H:i:s');
+        // Implementation to find a product by ID
     }
 
-    public function getId(): int
+    public function findAll(): array
     {
-        return $this->id;
+        // Implementation to find all products
     }
 
-    public function setId(int $id): void
+    public function save(Product $product): void
     {
-        $this->id = $id;
+        // Implementation to save a product
     }
 
-    public function getName(): string
+    public function delete(int $id): void
     {
-        return $this->name;
+        // Implementation to delete a product by ID
     }
 
-    public function setName(string $name): void
+    public function update(Product $product): void
     {
-        $this->name = $name;
+        // Implementation to update a product
     }
 
-    public function getPrice(): float
+    public function findByRestrictions(array $restrictions): array
     {
-        return $this->price;
-    }
-
-    public function setPrice(float $price): void
-    {
-        $this->price = $price;
-    }
-
-    public function getStock(): int
-    {
-        return $this->stock;
-    }
-
-    public function setStock(int $stock): void
-    {
-        $this->stock = $stock;
-    }
-
-    public function getStatus(): string
-    {
-        return $this->status;
-    }
-    public function setStatus(string $status): void
-    {
-        $this->status = $status;
-    }
-
-    public function getCreatedAt(): string
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(string $createdAt): void
-    {
-        $this->createdAt = $createdAt;
-    }
-    public function getUpdatedAt(): string
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(string $updatedAt): void
-    {
-        $this->updatedAt = $updatedAt;
+        // Implementation to find products by restrictions
     }
 }
-

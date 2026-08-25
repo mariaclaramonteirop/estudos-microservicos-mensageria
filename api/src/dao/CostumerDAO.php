@@ -114,4 +114,9 @@ class CostumerDAO implements CostumerRepository
 
         return $costumers;
     }
+    public function create(Costumer $costumer): Costumer
+    {
+        $this->save($costumer);
+        return $costumer;
+    }
 }

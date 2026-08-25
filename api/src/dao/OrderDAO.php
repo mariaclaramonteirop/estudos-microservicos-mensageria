@@ -106,4 +106,10 @@ class OrderDAO implements OrderRepository
 
         return $orders;
     }
+
+    public function create(Order $order): Order
+    {
+        $this->save($order);
+        return $order;
+    }
 }

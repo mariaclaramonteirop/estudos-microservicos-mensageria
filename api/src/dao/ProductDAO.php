@@ -50,12 +50,13 @@ class ProductDAO implements ProductRepository
 
     public function save(Product $product): void
     {
-        $sql = "INSERT INTO products (name, description, price) VALUES (:name, :description, :price)";
+        $sql = "INSERT INTO products (name, description, price, stock) VALUES (:name, :description, :price, :stock)";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
             'name' => $product->getName(),
             'description' => $product->getDescription(),
-            'price' => $product->getPrice()
+            'price' => $product->getPrice(),
+            'stock' => $product->getStock()
         ]);
         $product->setId($this->pdo->lastInsertId());
     }
@@ -126,5 +127,23 @@ class ProductDAO implements ProductRepository
         if ($stmt->rowCount() === 0) {
             throw new \Exception("Product with ID {$productId} not found or insufficient stock.");
         }
+    }
+    public function increaseStock(int $productId, int $quantity): void
+    {
+        $sql = "UPDATE products SET stock = stock + :quantity WHERE id = :id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            'id' => $productId,
+            'quantity' => $quantity
+        ]);
+
+        if ($stmt->rowCount() === 0) {
+            throw new \Exception("Product with ID {$productId} not found.");
+        }
+    }
+    public function create(Product $product): Product
+    {
+        $this->save($product);
+        return $product;
     }
 }

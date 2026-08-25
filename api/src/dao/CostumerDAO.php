@@ -91,7 +91,7 @@ class CostumerDAO implements CostumerRepository
 
     public function findByRestrictions(array $restrictions): array
     {
-        $query = 'SELECT * FROM costumers WHERE 1=1';
+        $query = 'SELECT * FROM costumers WHERE 1=1'; // Base query to allow dynamic conditions
         $params = [];
 
         foreach ($restrictions as $key => $value) {

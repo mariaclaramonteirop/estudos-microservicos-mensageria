@@ -7,6 +7,7 @@ use App\Repository\CostumerRepository;
 
 class CostumerDAO implements CostumerRepository
 {
+    // TODO: Adicionar tratamentos de excessões
     private PDO $pdo;
 
     public function __construct(PDO $pdo)

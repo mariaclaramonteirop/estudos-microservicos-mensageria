@@ -7,7 +7,7 @@ use App\Repository\ProductRepository;
 
 class ProductDAO implements ProductRepository
 {
-
+// TODO: Adicionar tratamentos de excessões
     private PDO $pdo;
 
     public function __construct(PDO $pdo)

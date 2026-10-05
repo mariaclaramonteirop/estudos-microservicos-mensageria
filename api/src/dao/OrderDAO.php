@@ -7,6 +7,7 @@ use App\Repository\OrderRepository;
 
 class OrderDAO implements OrderRepository
 {
+    // TODO: Adicionar tratamentos de excessões
     public function findById(int $id): ?Order
     {
         $sql = "SELECT * FROM orders WHERE id = :id";

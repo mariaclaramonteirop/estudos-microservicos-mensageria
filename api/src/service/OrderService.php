@@ -19,13 +19,13 @@ class OrderService {
         int $quantity
     ): Order {
 
-        $order = new Order(
-            customerId: $customerId,
-            productId: $productId,
-            quantity: $quantity
-        );
+        if ($quantity <= 0) {
+            throw new \InvalidArgumentException('Order quantity must be greater than zero');
+        }
 
-        $order = $this->repository->save($order);
+        $order = new Order(0, $customerId, $productId, $quantity, 0.0, 0.0);
+
+        $this->repository->save($order);
 
         $event = new OrderCreatedEvent(
             orderId: $order->getId(),

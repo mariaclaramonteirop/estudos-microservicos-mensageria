@@ -4,9 +4,12 @@ namespace App\DAO;
 
 use App\Entity\Order;
 use App\Repository\OrderRepository;
+use PDO;
 
 class OrderDAO implements OrderRepository
 {
+    public function __construct(private PDO $pdo) {}
+
     // TODO: Adicionar tratamentos de excessões
     public function findById(int $id): ?Order
     {
@@ -18,12 +21,7 @@ class OrderDAO implements OrderRepository
             return null;
         }
 
-        return new Order(
-            $row['id'],
-            $row['customer_id'],
-            $row['product_id'],
-            $row['quantity']
-        );
+        return $this->hydrate($row);
     }
 
     public function findAll(): array
@@ -33,26 +31,24 @@ class OrderDAO implements OrderRepository
         $stmt->execute();
         $orders = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $orders[] = new Order(
-                $row['id'],
-                $row['customer_id'],
-                $row['product_id'],
-                $row['quantity']
-            );
+            $orders[] = $this->hydrate($row);
         }
         return $orders;
     }
 
     public function save(Order $order): void
     {
-        $sql = "INSERT INTO orders (customer_id, product_id, quantity) VALUES (:customer_id, :product_id, :quantity)";
+        $sql = "INSERT INTO orders (customer_id, product_id, quantity, unit_price, total, status) VALUES (:customer_id, :product_id, :quantity, :unit_price, :total, :status)";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
             'customer_id' => $order->getCustomerId(),
             'product_id' => $order->getProductId(),
-            'quantity' => $order->getQuantity()
+            'quantity' => $order->getQuantity(),
+            'unit_price' => $order->getUnitPrice(),
+            'total' => $order->getTotal(),
+            'status' => $order->getStatus()
         ]);
-        $order->setId($this->pdo->lastInsertId());
+        $order->setId((int) $this->pdo->lastInsertId());
     }
 
     public function delete(int $id): void
@@ -87,7 +83,11 @@ class OrderDAO implements OrderRepository
         $sql = "SELECT * FROM orders where 1=1"; // Base query to allow dynamic conditions
         $params = [];
 
+        $allowed = ['id', 'customer_id', 'product_id', 'status'];
         foreach ($restrictions as $key => $value) {
+            if (!in_array($key, $allowed, true)) {
+                throw new \InvalidArgumentException("Unsupported order filter: $key");
+            }
             $sql .= " AND $key = :$key";
             $params[$key] = $value;
         }
@@ -97,12 +97,7 @@ class OrderDAO implements OrderRepository
 
         $orders = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $orders[] = new Order(
-                $row['id'],
-                $row['customer_id'],
-                $row['product_id'],
-                $row['quantity']
-            );
+            $orders[] = $this->hydrate($row);
         }
 
         return $orders;
@@ -112,5 +107,10 @@ class OrderDAO implements OrderRepository
     {
         $this->save($order);
         return $order;
+    }
+
+    private function hydrate(array $row): Order
+    {
+        return new Order((int) $row['id'], (int) $row['customer_id'], (int) $row['product_id'], (int) $row['quantity'], (float) $row['unit_price'], (float) $row['total'], $row['status']);
     }
 }
